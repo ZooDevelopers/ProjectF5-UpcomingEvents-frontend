@@ -6,7 +6,8 @@
     label: String,
     type: String,
     placeholder: String,
-    modelValue: String
+    modelValue: String,
+    error: String,
     });
 
     const emit = defineEmits(['update:modelValue']);
@@ -29,6 +30,7 @@
         @input="updateValue"
         class="w-full p-4 bg-purple-500 text-purple-200 text-lg font-normal font-inter rounded-lg border-2 border-transparent focus:border-pink hover:border-pink focus:text-grey placeholder:text-purple-200 cursor-pointer"
       />
+      <p v-if="error" class="text-red text-sm font-normal font-inter">{{ error }}</p>
     </div>
 </template>
   

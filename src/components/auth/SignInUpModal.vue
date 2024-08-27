@@ -21,7 +21,7 @@ const closeModal = () => {
 
 <template>
 <!-- <div class=" bg-white rounded-[20px] justify-start items-start inline-flex relative"> -->
-<div class="fixed z-10 top-0 left-0 w-full h-full flex items-center justify-center">
+<div class="fixed z-10 top-0 left-0 w-full h-full flex items-center justify-center bg-black/70">
     <div class="w-full max-w-[1080px] relative grid md:grid-cols-10 mx-4 md:mx-16">
         <div class="hidden md:flex w-full md:col-span-5 lg:col-span-6 bg-center bg-cover bg-no-repeat rounded-l-[20px]" :style="{ backgroundImage: `url(${modalBackgroundImage})` }">
             <!-- <img class="w-full" src="../../assets/events-form-img.jpg" /> -->
