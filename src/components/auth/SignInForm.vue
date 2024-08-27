@@ -25,7 +25,7 @@ async function handleLogin(event) {
           id="username"
           label="Username"
           type="text"
-          placeholder="Please enter your username"
+          placeholder="Enter your username"
           v-model="username"
         />
         
@@ -33,7 +33,7 @@ async function handleLogin(event) {
           id="password"
           label="Password"
           type="password"
-          placeholder="Please enter your password"
+          placeholder="Enter your password"
           v-model="password"
         />
       </div>
