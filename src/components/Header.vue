@@ -1,4 +1,15 @@
 <script setup>
+import { ref } from 'vue';
+import Button from '@/components/base/Button.vue';
+import SignInUpModal from '@/components/auth/SignInUpModal.vue';
+
+const isModalOpen = ref(false);
+const openModal = () => {
+  isModalOpen.value = true;
+};
+const closeModal = () => {
+  isModalOpen.value = false;
+};
 
 </script>
 
@@ -13,7 +24,9 @@
         </router-link>
       </div>
       <div class="actions">
-        <router-link to="/login" class="login-button">SIGN IN</router-link>
+        <!-- <router-link to="/login" class="login-button">SIGN IN</router-link> -->
+        <Button :label="'SIGN IN'" @click="openModal" />
+        <SignInUpModal v-if="isModalOpen" @close="closeModal" />
       </div>
     </header>
   </template>
