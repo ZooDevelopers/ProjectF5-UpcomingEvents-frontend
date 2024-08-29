@@ -4,7 +4,7 @@ import SignInForm from './SignInForm.vue'
 import SignUpForm from './SignUpForm.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
-import modalBackgroundImage from '../../assets/events-form-img.jpg'
+import modalBackgroundImage from '../../assets/images/events-form-img.jpg'
 
 const currentForm = ref('login-form')
 const emit = defineEmits(['close'])
@@ -20,14 +20,13 @@ const closeModal = () => {
 
 
 <template>
-<!-- <div class=" bg-white rounded-[20px] justify-start items-start inline-flex relative"> -->
-<div class="fixed z-10 top-0 left-0 w-full h-full flex items-center justify-center bg-black/70">
-    <div class="w-full max-w-[1080px] relative grid md:grid-cols-10 mx-4 md:mx-16">
+
+<div class="fixed z-10 top-0 left-0 w-full h-full flex items-center justify-center bg-black/70 ">
+    <div class="w-full max-w-[1080px] relative grid md:grid-cols-10 mx-4 md:mx-16 bg-purple-700 rounded-[20px] max-h-[90vh] overflow-y-auto">
         <div class="hidden md:flex w-full md:col-span-5 lg:col-span-6 bg-center bg-cover bg-no-repeat rounded-l-[20px]" :style="{ backgroundImage: `url(${modalBackgroundImage})` }">
-            <!-- <img class="w-full" src="../../assets/events-form-img.jpg" /> -->
         </div>
         
-        <div class="md:col-span-5 lg:col-span-4 px-10 py-[50px] bg-purple-700 flex-col justify-start items-start gap-10 inline-flex rounded-r-[20px]">
+        <div class="md:col-span-5 lg:col-span-4 px-10 py-10 bg-purple-700 flex-col justify-start items-start gap-10 inline-flex rounded-[20px]">
             <component :is="currentForm === 'login-form' ? SignInForm : SignUpForm" />
     
             <div v-if="currentForm === 'login-form'" class="flex flex-wrap items-baseline gap-1.5">

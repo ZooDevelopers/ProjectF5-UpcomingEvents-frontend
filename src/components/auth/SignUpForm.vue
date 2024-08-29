@@ -54,31 +54,14 @@ async function handleSignUp(event) {
   </div>
 
   <form @submit="handleSignUp" class="w-full flex flex-col items-start gap-8">
-    <div class="w-full flex flex-col items-start gap-5">
+    <div class="w-full flex flex-col items-start gap-4">
       <FormField
         id="username"
         label="Username"
         type="text"
         placeholder="Enter your username"
+        :required="true"
         v-model="username"
-      />
-
-      <FormField
-        id="email"
-        label="Email"
-        type="email"
-        placeholder="Enter your email"
-        v-model="email"
-        :error="emailError"
-      />
-
-      <FormField
-        id="confirm-email"
-        label="Confirm Email"
-        type="email"
-        placeholder="Confirm your email"
-        v-model="confirmEmail"
-        :error="emailError"
       />
 
       <FormField
@@ -86,6 +69,7 @@ async function handleSignUp(event) {
         label="Password"
         type="password"
         placeholder="Enter your password"
+        :required="true"
         v-model="password"
         :error="passwordError"
       />
@@ -95,8 +79,29 @@ async function handleSignUp(event) {
         label="Confirm Password"
         type="password"
         placeholder="Confirm your password"
+        :required="true"
         v-model="confirmPassword"
         :error="passwordError"
+      />
+
+      <FormField
+        id="email"
+        label="Email"
+        type="email"
+        placeholder="Enter your email"
+        :required="true"
+        v-model="email"
+        :error="emailError"
+      />
+
+      <FormField
+        id="confirm-email"
+        label="Confirm Email"
+        type="email"
+        placeholder="Confirm your email"
+        :required="true"
+        v-model="confirmEmail"
+        :error="emailError"
       />
     </div>
 
