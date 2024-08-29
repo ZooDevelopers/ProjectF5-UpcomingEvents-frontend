@@ -3,16 +3,16 @@
 </script>
 
 <template>
-    <footer class="footer">
+    <footer class=" bg-purple-900"> 
       <div class="footer-content">
-        <p>&copy; 2024 All rights reserved. Copying the site and information is prohibited.</p>
+        <p class = "text-purple-300 py-5 text-center text-sm">&copy; 2024 All rights reserved. Copying the site and information is prohibited.</p>
       </div>
     </footer>
   </template>
 
 <style scoped>
 
-.footer {
+/* .footer {
     background-color:#1F1C2F; 
     padding: 5px; 
     color: #ECBDF2; 
@@ -22,7 +22,7 @@
     height: 35px;
     margin-top: auto;   
     left: 0;
-  }
+  } */
   
 
 
