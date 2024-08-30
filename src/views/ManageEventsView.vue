@@ -1,9 +1,13 @@
 <script setup>
+import { ref } from 'vue';
 import ManageEvents from '@/components/ManageEvents.vue';
 
 </script>
 
 
 <template>
-    <ManageEvents/>
+    <main>
+
+        <ManageEvents/>
+    </main>
 </template>
