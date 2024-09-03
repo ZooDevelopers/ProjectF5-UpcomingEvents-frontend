@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AddEventForm from '@/components/AddEventForm.vue'
+import ManageEventsView from '@/views/ManageEventsView.vue'
 
 
 const router = createRouter({
