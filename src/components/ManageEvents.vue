@@ -1,66 +1,82 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import Button from './base/Button.vue'; 
+import { useRouter } from 'vue-router';
+import EditEventForm from './EditEventForm.vue';
+import DeleteConfirmationForm from './DeleteConfirmationForm.vue';
 
-const eventData = ref({
-  content: [
-    // Aquí va la lista de eventos
-  ],
-});
+const router = useRouter();
+const events = ref([]); 
 
-const currentPage = ref(0);
-const totalPages = ref(5); // Ajusta según tu lógica
-
-const removeEvent = (id) => {
-  // Implementa la lógica para eliminar el evento
-};
-
-const prevPage = () => {
-  if (currentPage.value > 0) {
-    currentPage.value--;
-    // Implementa la lógica para cargar la nueva página
+//  eventos desde el backend
+const fetchEvents = async () => {
+  try {
+    const response = await axios.get('http://localhost:8080/api/v1/events');
+    if (response.data && Array.isArray(response.data)) {
+      events.value = response.data;
+    } else {
+      console.error('The response from the backend does not have the expected structure.');
+    }
+  } catch (error) {
+    console.error('Error retrieving the list of events:', error);
   }
 };
 
-const nextPage = () => {
-  if (currentPage.value < totalPages.value - 1) {
-    currentPage.value++;
-    // Implementa la lógica para cargar la nueva página
-  }
+onMounted(fetchEvents);
+
+
+const deleteEvent = (id) => {
+  router.push({ name: 'deleteconfirmationform', params: { id } });
+};
+
+
+const editEvent = (id) => {
+  router.push({ name: 'editeventform', params: { id } });
+};
+
+// agregar  nuevo evento
+const addNewEvent = () => {
+  router.push({ name: 'AddEvent' });
 };
 </script>
 
 <template>
-  <div class="bg-purple-900 text-white p-8 rounded-lg">
-    <h1 class="text-4xl font-rubik text-peach-500 mb-6">Manage Events</h1>
-    <div class="bg-purple-800 p-4 rounded-lg">
-      <EventCard 
-        v-for="event in eventData.content" 
-        :key="event.id" 
-        :event="event" 
-        @eventDeleted="removeEvent" 
-        class="mb-4 last:mb-0"
-      />
-      <p v-if="eventData.content.length === 0" class="text-center text-peach-500">No events found.</p>
+  <div class="p-8 bg-purple-800 text-purple-50 rounded-lg">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-4xl font-rubik text-pink">MANAGE EVENTS</h1>
+      <Button label="Add New Event" @click="addNewEvent" /> 
     </div>
-    <div class="flex justify-between items-center mt-6">
-      <button 
-        @click="prevPage" 
-        :disabled="currentPage === 0" 
-        class="bg-peach-500 text-purple-900 py-2 px-4 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
-      >
-        Previous
-      </button>
-      <span class="text-lg font-inter text-peach-500">
-        Page {{ currentPage + 1 }} of {{ totalPages }}
-      </span>
-      <button 
-        @click="nextPage" 
-        :disabled="currentPage >= totalPages - 1" 
-        class="bg-peach-500 text-purple-900 py-2 px-4 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
-      >
-        Next
-      </button>
+    <div class="overflow-x-auto bg-purple-600 rounded-lg border border-purple-800">
+      <table class="min-w-full text-left border-collapse">
+        <thead class="bg-purple-400">
+          <tr>
+            <th class="px-6 py-4 text-pink border-purple-700">Title</th>
+            <th class="px-6 py-4 text-pink border-purple-700">Date</th>
+            <th class="px-6 py-4 text-pink border-purple-700">Time</th>
+            <th class="px-6 py-4 text-pink border-purple-700">Spots Left</th>
+            <th class="px-6 py-4 text-pink border-purple-700">Featured</th>
+            <th class="px-6 py-4 text-pink border-purple-700">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="event in events" :key="event.id" class="hover:bg-purple-100">
+            <td class="px-6 py-4 border-b border-purple-700">{{ event.title }}</td>
+            <td class="px-6 py-4 border-b border-purple-700">{{ event.date }}</td>
+            <td class="px-6 py-4 border-b border-purple-700">{{ event.time }}</td>
+            <td class="px-6 py-4 border-b border-purple-700">{{ event.maxparticipants }}</td>
+            <td class="px-6 py-4 border-b border-purple-700">{{ event.is_featured ? 'Yes' : 'No' }}</td>
+            <td class="px-6 py-4 flex space-x-2 border-b border-purple-700">
+              <button @click="editEvent(event.id)" class="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded">
+                ✏️
+              </button>
+              <button @click="deleteEvent(event.id)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">
+                🗑️
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
-
