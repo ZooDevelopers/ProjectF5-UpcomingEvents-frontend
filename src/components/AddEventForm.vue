@@ -1,7 +1,7 @@
 <script setup>
-import { ref } from "vue";
-import FormField from "./base/FormField.vue"; // Asegúrate de importar el componente
 import Button from "@/components/base/Button.vue";
+import { ref } from "vue";
+import FormField from "./base/FormField.vue";
 
 const form = ref({
   title: "",
@@ -125,6 +125,5 @@ const cancel = () => {
   </div>
 </template>
 
-Enviar un mensaje a julia
 
 <style scoped></style>
