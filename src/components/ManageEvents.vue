@@ -1,103 +1,66 @@
+<script setup>
+import { ref } from 'vue';
 
-<script>
-export default {
-  data() {
-    return {
-      eventData: {
-        content: [
-          // Aquí va lista de eventos
-        ],
-      },
-      currentPage: 0,
-      totalPages: 5, // Ajusta según tu lógica
-    };
-  },
-  methods: {
-    removeEvent(id) {
-      //  eliminar el evento
-    },
-    prevPage() {
-      if (this.currentPage > 0) {
-        this.currentPage--;
-        //  nueva página
-      }
-    },
-    nextPage() {
-      if (this.currentPage < this.totalPages - 1) {
-        this.currentPage++;
-        //  datos de la nueva página
-      }
-    },
-  },
+const eventData = ref({
+  content: [
+    // Aquí va la lista de eventos
+  ],
+});
+
+const currentPage = ref(0);
+const totalPages = ref(5); // Ajusta según tu lógica
+
+const removeEvent = (id) => {
+  // Implementa la lógica para eliminar el evento
+};
+
+const prevPage = () => {
+  if (currentPage.value > 0) {
+    currentPage.value--;
+    // Implementa la lógica para cargar la nueva página
+  }
+};
+
+const nextPage = () => {
+  if (currentPage.value < totalPages.value - 1) {
+    currentPage.value++;
+    // Implementa la lógica para cargar la nueva página
+  }
 };
 </script>
 
 <template>
-  <div class="manage-events">
-    <h1>Manage Events</h1>
-    <div class="events-container">
+  <div class="bg-purple-900 text-white p-8 rounded-lg">
+    <h1 class="text-4xl font-rubik text-peach-500 mb-6">Manage Events</h1>
+    <div class="bg-purple-800 p-4 rounded-lg">
       <EventCard 
         v-for="event in eventData.content" 
         :key="event.id" 
         :event="event" 
         @eventDeleted="removeEvent" 
+        class="mb-4 last:mb-0"
       />
-      <p v-if="eventData.content.length === 0">No events found.</p>
+      <p v-if="eventData.content.length === 0" class="text-center text-peach-500">No events found.</p>
     </div>
-    <div class="pagination">
-      <button @click="prevPage" :disabled="currentPage === 0" class="pagination-btn">Previous</button>
-      <span>Page {{ currentPage + 1 }} of {{ totalPages }}</span>
-      <button @click="nextPage" :disabled="currentPage >= totalPages - 1" class="pagination-btn">Next</button>
+    <div class="flex justify-between items-center mt-6">
+      <button 
+        @click="prevPage" 
+        :disabled="currentPage === 0" 
+        class="bg-peach-500 text-purple-900 py-2 px-4 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
+      >
+        Previous
+      </button>
+      <span class="text-lg font-inter text-peach-500">
+        Page {{ currentPage + 1 }} of {{ totalPages }}
+      </span>
+      <button 
+        @click="nextPage" 
+        :disabled="currentPage >= totalPages - 1" 
+        class="bg-peach-500 text-purple-900 py-2 px-4 rounded-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
+      >
+        Next
+      </button>
     </div>
   </div>
 </template>
-
-
-
-<style scoped>
-.manage-events {
-  font-family: 'Poppins', sans-serif;
-  color: #ffffff;
-  background-color: #1a1a3a;
-  padding: 2rem;
-  border-radius: 8px;
-}
-
-h1 {
-  font-size: 2rem;
-  color: #ff6b6b;
-  margin-bottom: 1rem;
-}
-
-.events-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  background-color: #2a2a5a;
-  border-radius: 8px;
-  padding: 1rem;
-}
-
-.no-data {
-  padding: 1rem;
-  text-align: center;
-  color: #ff6b6b;
-}
-
-.pagination {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 1rem;
-}
-
-.pagination-btn {
-  background-color: #ff6b6b;
-  color: white;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-</style>
 
