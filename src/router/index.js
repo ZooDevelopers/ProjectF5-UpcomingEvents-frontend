@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import SignInUpModal from '@/components/auth/SignInUpModal.vue'
+import AddEventForm from '@/components/AddEventForm.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,10 +20,12 @@ const router = createRouter({
     
     
     {
-      path: '/login-temp',
-      name: 'login-temp',
-      component: SignInUpModal
+      path: '/addeventform',
+      name: 'addeventform',
+      component: AddEventForm
     },
+
+
   ]
 })
 
