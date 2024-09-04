@@ -2,8 +2,7 @@
 import { ref } from 'vue';
 import FormField from '@/components/base/FormField.vue';
 import Button from '@/components/base/Button.vue';
-import { useAuthStore } from '@/stores/login'; // Importar el store de autenticación
-
+import { useAuthStore } from '@/stores/login'; 
 const username = ref('');
 const email = ref('');
 const confirmEmail = ref('');
@@ -13,8 +12,7 @@ const confirmPassword = ref('');
 const emailError = ref('');
 const passwordError = ref('');
 
-const props = defineProps(['closeModal']); // Recibir la función para cerrar el modal
-
+const props = defineProps(['closeModal']); 
 function validateEmail() {
   if (email.value !== confirmEmail.value) {
     emailError.value = 'Emails do not match';
@@ -44,7 +42,7 @@ async function handleSignUp(event) {
     await useAuthStore().register(username.value, password.value, email.value);
 
     if (useAuthStore().isAuthenticated) {
-      props.closeModal(); // Llama a la función pasada como prop para cerrar el modal
+      props.closeModal(); 
     } else {
       alert('Registration failed: ' + useAuthStore().errorMessage);
     }
@@ -117,5 +115,4 @@ async function handleSignUp(event) {
 </template>
 
 <style scoped>
-/* Estilos personalizados aquí */
 </style>

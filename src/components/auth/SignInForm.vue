@@ -2,15 +2,14 @@
 import { ref } from 'vue';
 import FormField from '@/components/base/FormField.vue';
 import Button from '@/components/base/Button.vue';
-import { useAuthStore } from '@/stores/login'; // Importar el store de autenticación
-import { useRouter } from 'vue-router'; // Importar router para manejar redirecciones
-
+import { useAuthStore } from '@/stores/login'; 
+import { useRouter } from 'vue-router'; 
 const username = ref('');
 const password = ref('');
-const authStore = useAuthStore(); // Usar el store de autenticación
-const router = useRouter(); // Usar router para redirección
+const authStore = useAuthStore(); 
+const router = useRouter(); 
 
-const props = defineProps(['closeModal']); // Recibir la función para cerrar el modal
+const props = defineProps(['closeModal']); 
 
 async function handleLogin(event) {
   event.preventDefault();
@@ -19,8 +18,8 @@ async function handleLogin(event) {
     await authStore.login(username.value, password.value);
 
     if (authStore.isAuthenticated) {
-      props.closeModal(); // Llama a la función pasada como prop para cerrar el modal
-      router.push('/admin'); // Cambia '/admin' por la ruta a la que desees redirigir
+      props.closeModal(); 
+      router.push('/ManageEvents'); 
     } else {
       alert('Login failed: ' + authStore.errorMessage);
     }
@@ -60,5 +59,4 @@ async function handleLogin(event) {
 </template>
 
 <style scoped>
-/* Estilos personalizados aquí */
 </style>

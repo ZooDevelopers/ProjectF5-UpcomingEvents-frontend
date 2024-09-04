@@ -45,5 +45,4 @@ const closeModal = () => {
 </template>
 
 <style scoped>
-/* Estilos personalizados aquí */
 </style>

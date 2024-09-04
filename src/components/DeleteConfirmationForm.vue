@@ -1,7 +1,6 @@
 <script setup>
 import { defineEmits, defineProps } from 'vue';
 
-// Definimos las propiedades que se utilizarán en el componente
 const props = defineProps({
   id: String,
   label: String,
@@ -12,29 +11,21 @@ const props = defineProps({
   error: String,
 });
 
-// Definimos los eventos que se pueden emitir desde el componente
 const emit = defineEmits(['update:modelValue']);
 
-// Función para manejar la actualización del valor del input
 function updateValue(event) {
   emit('update:modelValue', event.target.value);
 }
 
-// Función para cerrar el modal
 const closeModal = () => {
-  // Lógica para cerrar el modal
   console.log('Modal closed');
 };
 
-// Función para cancelar la eliminación
 const cancelDelete = () => {
-  // Lógica para cancelar la eliminación
   console.log('Deletion canceled');
 };
 
-// Función para confirmar la eliminación
 const confirmDelete = () => {
-  // Lógica para confirmar la eliminación
   console.log('Event deleted');
 };
 </script>

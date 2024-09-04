@@ -19,10 +19,10 @@ const handleFileUpload = (event) => {
 };
 const submitForm = () => {
   console.log("Form data:", form.value);
-  // Aquí puedes agregar la lógica para enviar los datos al servidor
+
 };
 const cancel = () => {
-  // Resetea el formulario o navega a otra página
+
   console.log("Cancel");
 };
 </script>
