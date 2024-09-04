@@ -5,6 +5,7 @@ import EventsService from '@/core/api/eventsService';
 
 export const useEventStore = defineStore('events', () => {
     const events = ref([]);
+    const featuredEvents = ref([]);
     const isLoading = ref(false);
     const totalPages = ref(0);
 
@@ -26,6 +27,17 @@ export const useEventStore = defineStore('events', () => {
             isLoading.value = false;
         }
     }
+    
+    async function fetchFeaturedEvents() {
+        isLoading.value = true;
+        try {
+            featuredEvents.value = await service.getFeaturedEvents();
+        } catch (error) {
+            console.error('Error fetching featured events:', error);
+        } finally {
+            isLoading.value = false;
+        }
+    }
 
-    return { events, isLoading, totalPages, setEvents };
+    return {events, featuredEvents, isLoading, totalPages, setEvents, fetchFeaturedEvents };
 });

@@ -34,4 +34,30 @@ export default class EventsService {
             throw new Error('Error loading Events API');
         }
     }
+
+    async getFeaturedEvents() {
+        try {
+            const data = await this.#repo.getFeaturedEvents();
+    
+            if (!data || !Array.isArray(data)) {
+                throw new Error('The API response is not a valid array of events.');
+            }
+    
+            const events = data.map(event => new Events(
+                event.title,
+                event.date,
+                event.maxparticipants,
+                event.description,
+                event.imageUrl,
+                event.isFeatured,
+                event.location,
+                event.time
+            ));
+    
+            return events;
+        } catch (error) {
+            console.error('Error fetching featured events:', error.message);
+            throw new Error('Error loading featured events API');
+        }
+    }
 }
