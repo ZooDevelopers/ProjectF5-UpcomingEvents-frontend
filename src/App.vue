@@ -23,7 +23,7 @@ import Footer from './components/Footer.vue';
   display: flex;
   flex-direction: column;
   min-height: 100vh; 
-  background-color: #574973;
+  background-color: #30283F;
 }
 
 .content {

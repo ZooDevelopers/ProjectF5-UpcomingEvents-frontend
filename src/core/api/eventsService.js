@@ -21,8 +21,8 @@ export default class EventsService {
                     event.date,
                     event.maxparticipants,
                     event.description,
-                    event.imageUrl, 
-                    event.is_featured === "true", 
+                    event.imageUrl,
+                    event.is_featured,
                     event.location,
                     event.time
                 );
