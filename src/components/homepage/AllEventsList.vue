@@ -1,8 +1,8 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import { useEventStore } from '@/stores/events';
-import EventCard from '@/components/EventCard.vue'; 
-import EventModal from '@/components/EventModal.vue'; 
+import EventCard from '@/components/events/EventCard.vue'; 
+import EventModal from '@/components/events/EventModal.vue'; 
 
 const showModal = ref(false);
 const currentEvent = ref(null);
