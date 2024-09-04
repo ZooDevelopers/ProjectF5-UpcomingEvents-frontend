@@ -5,9 +5,9 @@ export default class EventsRepository extends Repository {
         super(uri);
     }
 
-    async getByType(type) {
+    async getByType(query) {
         try {
-            const url = `${this.uri}`;
+            const url = `${this.uri}?${query}`;
             console.log('Fetching from URL:', url);
             const response = await fetch(url);
             if (!response.ok) {

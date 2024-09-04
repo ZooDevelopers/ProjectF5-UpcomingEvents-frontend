@@ -7,15 +7,15 @@ export default class EventsService {
         this.#repo = repository;
     }
 
-    async getEvents() {
+    async getEvents(page = 0, size = 6) {
         try {
-            const data = await this.#repo.getByType('events');
+            const data = await this.#repo.getByType(`page=${page}&size=${size}`);
 
-            if (!Array.isArray(data)) {
+            if (!data || !Array.isArray(data.content)) {
                 throw new Error('La respuesta de la API no es un array de eventos válido.');
             }
 
-            const events = data.map(event => {
+            const events = data.content.map(event => {
                 return new Events(
                     event.title,
                     event.date,
@@ -28,7 +28,7 @@ export default class EventsService {
                 );
             });
 
-            return events;
+            return { events, totalPages: data.totalPages }; 
         } catch (error) {
             console.error('Error al obtener eventos:', error.message);
             throw new Error('Error loading Events API');
