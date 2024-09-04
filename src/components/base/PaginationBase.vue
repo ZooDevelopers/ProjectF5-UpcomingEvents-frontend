@@ -67,7 +67,7 @@ const visiblePages = computed(() => {
       class="px-4 py-2 rounded-md flex items-center gap-2 text-peach-500 font-semibold font-rubik text-sm transition hover:bg-purple-700 hover:text-peach-300 disabled:text-peach-800 disabled:cursor-not-allowed"
       :disabled="isFirstPage"
       @click="goToPreviousPage"
-    >
+      >
       <svg
         class="w-4 h-4"
         fill="none"
@@ -106,7 +106,7 @@ const visiblePages = computed(() => {
       class="px-4 py-2 rounded-md flex items-center gap-2 text-peach-500 font-semibold font-rubik text-sm transition hover:bg-purple-700 hover:text-peach-300 disabled:text-peach-800 disabled:cursor-not-allowed"
       :disabled="isLastPage"
       @click="goToNextPage"
-    >
+      >
       Next
       <svg
         class="w-4 h-4"
@@ -114,7 +114,7 @@ const visiblePages = computed(() => {
         stroke="currentColor"
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
-      >
+        >
         <path
           stroke-linecap="round"
           stroke-linejoin="round"

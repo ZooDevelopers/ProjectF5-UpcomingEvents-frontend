@@ -22,7 +22,7 @@ export default class EventsService {
                     event.maxparticipants,
                     event.description,
                     event.imageUrl,
-                    event.is_featured,
+                    event.isFeatured,
                     event.location,
                     event.time
                 );

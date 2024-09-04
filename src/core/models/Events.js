@@ -5,17 +5,17 @@ export default class Events {
     maxparticipants
     description
     imgUrl
-    is_featured
+    isFeatured
     location
     time
 
-    constructor(title, date, maxparticipants, description, imgUrl, is_featured, location, time){
+    constructor(title, date, maxparticipants, description, imgUrl, isFeatured, location, time){
      this.title = title
      this.date= date
      this.maxparticipants= maxparticipants
      this.description= description
      this.imgUrl= imgUrl
-     this.is_featured= is_featured
+     this.isFeatured= isFeatured
      this.location= location
      this.time = time
     }
@@ -39,8 +39,8 @@ export default class Events {
     getImgUrl(){
         return this.imgUrl
     }
-    getIs_Featured(){
-        return this.is_featured
+    getIsFeatured(){
+        return this.isFeatured
     }
 
     getLocation(){

@@ -27,7 +27,8 @@ const updateButtonState = () => {
 onMounted(async () => {
   try {
     await eventStore.setEvents();
-    events.value = eventStore.events.filter((event) => event.getIs_Featured());
+    console.log("All events:", eventStore.events);
+    events.value = eventStore.events.filter((event) => event.getIsFeatured());
 
     await nextTick();
 
@@ -60,7 +61,7 @@ const openModal = (event) => {
       <div class="swiper-wrapper">
         <swiper-slide
           v-for="event in events"
-          :key="event.title"
+          :key="event.id"
           class="swiper-slide slide-temporary cursor-pointer"
           @click="openModal(event)"
         >

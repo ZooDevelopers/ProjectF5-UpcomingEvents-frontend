@@ -36,18 +36,18 @@ const closeModal = () => {
 
 <template>
   <div class="max-w-[1290px] mx-auto xl:px-0 px-6">
-    <h2 class="text-pink text-5xl font-bold font-rubik uppercase leading-tight">All Events</h2>
+    <h2 class="text-pink text-5xl font-bold font-rubik uppercase leading-tight mb-10">All Events</h2>
     
     <div v-if="events.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
       <EventCard
         v-for="event in events"
-        :key="event.getTitle()"
+        :key="event.id"
         :eventData="event"
         @openModal="openModal" 
       />
     </div>
 
-    <PaginationBase
+    <PaginationBase class="mt-10"
       :current-page="currentPage"
       :total-pages="totalPages"
       @pageChanged="handlePageChanged"
