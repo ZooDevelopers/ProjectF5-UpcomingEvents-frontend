@@ -25,7 +25,7 @@ export default class EventsService {
                     event.maxparticipants,
                     event.description,
                     event.imageUrl, // Cambiado de imgUrl a imageUrl para que coincida con la respuesta de la API
-                    event.is_featured === "true", // Convierte de string a booleano
+                    event.is_featured,
                     event.location,
                     event.time
                 );
