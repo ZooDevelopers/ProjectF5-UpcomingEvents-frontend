@@ -1,8 +1,10 @@
-import AddEventForm from '@/components/AddEventForm.vue'
+
+import DeleteConfirmationForm from '@/components/DeleteConfirmationForm.vue'
 import EditEventForm from '@/components/EditEventForm.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import AdminPageView from '@/views/AdminPageView.vue'
+import AddEventForm from '@/components/AddEventForm.vue'
+import ManageEventsView from '@/views/ManageEventsView.vue'
 
 
 const router = createRouter({
@@ -13,6 +15,13 @@ const router = createRouter({
       name: 'home',
       component: HomeView
     },
+
+    {
+      path: '/ManageEvents',
+      name: 'manageEvents',
+      component: ManageEventsView
+    },
+    
     
     {
       path: '/addeventform',
@@ -25,11 +34,10 @@ const router = createRouter({
       component: EditEventForm
     },
     {
-      path: '/admin',
-      name: 'admin',
-      component: AdminPageView
-    }
-
+    path: '/deleteconfirmationform',
+    name: 'deleteconfirmationform',
+    component: DeleteConfirmationForm
+  },
 
   ]
 })
