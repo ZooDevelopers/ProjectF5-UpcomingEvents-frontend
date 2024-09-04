@@ -2,19 +2,20 @@
 import Button from "@/components/base/Button.vue";
 import { ref } from "vue";
 import FormField from "./base/FormField.vue";
-import { storage } from "../firebase/firebase.js"; // Importamos la configuración de Firebase
+import { storage } from "../firebase/firebase.js"; 
 import { ref as storageRef, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import axios from "axios"; // Importa Axios
 
 const form = ref({
   title: "",
   date: "",
   time: "",
-  spots: 0,
+  spots: 0, // spots es numérico
   location: "",
   image: null,
   description: "",
   isFeatured: false,
-  imageUrl: "", // Agregamos para almacenar la URL de la imagen subida
+  imageUrl: "", // Guardamos la URL de la imagen subida
 });
 
 const handleFileUpload = (event) => {
@@ -54,47 +55,59 @@ const uploadImage = async () => {
 
 const submitForm = async () => {
   try {
-    const imageUrl = await uploadImage(); // Subimos la imagen y obtenemos la URL
+    // Subimos la imagen y obtenemos la URL
+    const imageUrl = await uploadImage();
     if (imageUrl) {
-      form.value.imageUrl = imageUrl; // Guardamos la URL de la imagen en el formulario
+      form.value.imageUrl = imageUrl;
       console.log("Imagen subida correctamente. URL:", imageUrl);
     }
 
-    // Aquí puedes enviar el formulario completo al servidor o hacer lo que necesites
-    console.log("Form data:", form.value);
-    alert("Evento creado exitosamente");
-
-    // Limpiar formulario
-    form.value = {
-      title: "",
-      date: "",
-      time: "",
-      spots: 0,
-      location: "",
-      image: null,
-      description: "",
-      isFeatured: false,
-      imageUrl: "",
+    // Preparar el cuerpo de la solicitud para enviar al back-end
+    const eventData = {
+      title: form.value.title.trim(),
+      date: form.value.date,
+      time: form.value.time,
+      spots: form.value.spots,
+      location: form.value.location.trim(),
+      imageUrl: form.value.imageUrl,
+      description: form.value.description.trim(),
+      isFeatured: form.value.isFeatured,  // Booleano correcto
     };
-  } catch (error) {
-    alert("Error al subir la imagen: " + error.message);
-  }
-};
 
-const cancel = () => {
-  console.log("Cancel");
-  // Resetea el formulario
-  form.value = {
-    title: "",
-    date: "",
-    time: "",
-    spots: 0,
-    location: "",
-    image: null,
-    description: "",
-    isFeatured: false,
-    imageUrl: "",
-  };
+    // Asegúrate de que no estás enviando un `id` manualmente
+    // Credenciales de autenticación básica
+    const username = 'admin';  // Cambia esto por el usuario correcto
+    const password = 'password';  // Cambia esto por la contraseña correcta
+    const credentials = btoa(`${username}:${password}`); // Codifica en base64
+
+    // Realizar la solicitud POST con Axios
+    const response = await axios.post(
+      'http://localhost:8080/api/v1/events',
+      eventData,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Basic ${credentials}` // Enviamos las credenciales codificadas en base64
+        }
+      }
+    );
+
+    // Si el servidor responde con éxito
+    console.log('Evento guardado exitosamente:', response.data);
+    alert('Evento creado exitosamente');
+
+  } catch (error) {
+    // Manejo de errores
+    if (error.response) {
+      // Errores en la respuesta del servidor
+      console.error("Error en el servidor:", error.response.data);
+      alert("Error en el servidor: " + error.response.data.message);
+    } else {
+      // Otros errores
+      console.error("Error al crear el evento:", error.message);
+      alert("Error al crear el evento: " + error.message);
+    }
+  }
 };
 </script>
 
@@ -130,14 +143,16 @@ const cancel = () => {
           required
           class="w-full"
         />
+        
         <FormField
-          id="spots"
-          label="Spots"
-          type="text"
-          v-model:modelValue="form.spots"
-          required
-          class="w-full"
-        />
+  id="spots"
+  label="Spots"
+  type="number"
+  v-model:number="form.spots"  
+  required
+  class="w-full"
+/>
+
       </div>
       <FormField
         id="location"
@@ -165,7 +180,7 @@ const cancel = () => {
         label="Description"
         type="textarea"
         placeholder="Type here"
-        v-model:modelValue="form.description"
+        v-model:modelValue="form.spots"
         required
         class="w-full"
       />
