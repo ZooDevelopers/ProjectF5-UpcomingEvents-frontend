@@ -7,5 +7,6 @@ import Card from '@/components/Card.vue';
 <template>
   <main>
     <Card />
+ 
   </main>
 </template>
