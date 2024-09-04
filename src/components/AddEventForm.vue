@@ -2,6 +2,8 @@
 import Button from "@/components/base/Button.vue";
 import { ref } from "vue";
 import FormField from "./base/FormField.vue";
+import { storage } from "../firebase/firebase.js"; // Importamos la configuración de Firebase
+import { ref as storageRef, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const form = ref({
   title: "",
@@ -12,18 +14,87 @@ const form = ref({
   image: null,
   description: "",
   isFeatured: false,
+  imageUrl: "", // Agregamos para almacenar la URL de la imagen subida
 });
+
 const handleFileUpload = (event) => {
   const file = event.target.files[0];
   form.value.image = file;
 };
-const submitForm = () => {
-  console.log("Form data:", form.value);
 
+const uploadImage = async () => {
+  if (!form.value.image) {
+    alert("Por favor selecciona un archivo");
+    return null;
+  }
+
+  // Crear una referencia al archivo en Firebase Storage
+  const fileRef = storageRef(storage, `images/${form.value.image.name}`);
+  const uploadTask = uploadBytesResumable(fileRef, form.value.image);
+
+  // Seguimos el progreso de la subida y retornamos la URL una vez completado
+  return new Promise((resolve, reject) => {
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(`Subida en progreso: ${progress}%`);
+      },
+      (error) => {
+        console.error("Error al subir la imagen:", error);
+        reject(error);
+      },
+      async () => {
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        resolve(downloadURL);
+      }
+    );
+  });
 };
-const cancel = () => {
 
+const submitForm = async () => {
+  try {
+    const imageUrl = await uploadImage(); // Subimos la imagen y obtenemos la URL
+    if (imageUrl) {
+      form.value.imageUrl = imageUrl; // Guardamos la URL de la imagen en el formulario
+      console.log("Imagen subida correctamente. URL:", imageUrl);
+    }
+
+    // Aquí puedes enviar el formulario completo al servidor o hacer lo que necesites
+    console.log("Form data:", form.value);
+    alert("Evento creado exitosamente");
+
+    // Limpiar formulario
+    form.value = {
+      title: "",
+      date: "",
+      time: "",
+      spots: 0,
+      location: "",
+      image: null,
+      description: "",
+      isFeatured: false,
+      imageUrl: "",
+    };
+  } catch (error) {
+    alert("Error al subir la imagen: " + error.message);
+  }
+};
+
+const cancel = () => {
   console.log("Cancel");
+  // Resetea el formulario
+  form.value = {
+    title: "",
+    date: "",
+    time: "",
+    spots: 0,
+    location: "",
+    image: null,
+    description: "",
+    isFeatured: false,
+    imageUrl: "",
+  };
 };
 </script>
 
@@ -124,6 +195,5 @@ const cancel = () => {
     </form>
   </div>
 </template>
-
 
 <style scoped></style>
