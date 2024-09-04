@@ -7,6 +7,7 @@ import EventModel from '@/components/EventModel.vue'; // Importar el nuevo compo
 const showModal = ref(false);
 const currentEvent = ref(null);
 
+
 const eventStore = useEventStore();
 
 onMounted(async () => {
@@ -44,7 +45,6 @@ const closeModal = () => {
         <div class="cursor-pointer" @click="openModal(event)">
           <img :src="event.getImgUrl()" alt="Event Image" class="w-full h-48 object-cover" />
         </div>
-        <!-- Contenido de la tarjeta -->
         <div class="p-4">
           <div class="flex justify-between items-center text-sm text-grey-300 mb-2">
             <span><i class="far fa-calendar-alt"></i> {{ event.getDate() }}</span>
