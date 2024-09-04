@@ -2,6 +2,7 @@ import AddEventForm from '@/components/AddEventForm.vue'
 import EditEventForm from '@/components/EditEventForm.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import AdminPageView from '@/views/AdminPageView.vue'
 
 
 const router = createRouter({
@@ -23,6 +24,11 @@ const router = createRouter({
       name: 'editeventform',
       component: EditEventForm
     },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: AdminPageView
+    }
 
 
   ]

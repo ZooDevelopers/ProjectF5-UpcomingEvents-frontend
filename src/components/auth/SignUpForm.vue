@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import FormField from '@/components/base/FormField.vue';
 import Button from '@/components/base/Button.vue';
+import { useAuthStore } from '@/stores/login'; // Importar el store de autenticación
 
 const username = ref('');
 const email = ref('');
@@ -12,43 +13,49 @@ const confirmPassword = ref('');
 const emailError = ref('');
 const passwordError = ref('');
 
+const props = defineProps(['closeModal']); // Recibir la función para cerrar el modal
+
 function validateEmail() {
-    if (email.value !== confirmEmail.value) {
-        emailError.value = 'Emails do not match';
-    } else {
-        emailError.value = '';
-        return true;
-    }
+  if (email.value !== confirmEmail.value) {
+    emailError.value = 'Emails do not match';
+  } else {
+    emailError.value = '';
+    return true;
+  }
 }
 
 function validatePassword() {
-    if (password.value !== confirmPassword.value) {
-        passwordError.value = 'Passwords do not match';
-    } else {
-        passwordError.value = '';
-        return true;
-    }
+  if (password.value !== confirmPassword.value) {
+    passwordError.value = 'Passwords do not match';
+  } else {
+    passwordError.value = '';
+    return true;
+  }
 }
 
 async function handleSignUp(event) {
-    event.preventDefault();
-    
-    if (!validateEmail() || !validatePassword()) {
-        console.log({
-        username: username.value,
-        email: email.value,
-        confirmEmail: confirmEmail.value,
-        password: password.value,
-        confirmPassword: confirmPassword.value
-      });
+  event.preventDefault();
+  
+  if (!validateEmail() || !validatePassword()) {
+    return;
+  }
 
-      // TODO: sign up logic 
+  try {
+    await useAuthStore().register(username.value, password.value, email.value);
+
+    if (useAuthStore().isAuthenticated) {
+      props.closeModal(); // Llama a la función pasada como prop para cerrar el modal
+    } else {
+      alert('Registration failed: ' + useAuthStore().errorMessage);
     }
+  } catch (error) {
+    console.error('Registration error:', error);
+  }
 }
 </script>
 
 <template>
-      <div class="w-full flex flex-col items-start gap-2.5">
+  <div class="w-full flex flex-col items-start gap-2.5">
     <h3 class="text-pink text-4xl font-bold font-rubik uppercase leading-tight">Sign Up!</h3>
     <p class="text-grey text-base font-normal font-inter leading-normal">Create your Account</p>
   </div>
@@ -108,3 +115,7 @@ async function handleSignUp(event) {
     <Button type="submit" label="Sign Up" />
   </form>
 </template>
+
+<style scoped>
+/* Estilos personalizados aquí */
+</style>
