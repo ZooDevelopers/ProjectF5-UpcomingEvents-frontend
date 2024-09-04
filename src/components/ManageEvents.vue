@@ -32,12 +32,12 @@ const deleteEvent = (id) => {
 
 
 const editEvent = (id) => {
-  router.push({ name: 'editeventform', params: { id } });
+  router.push({ name: 'editeventform' });
 };
 
-// agregar  nuevo evento
+
 const addNewEvent = () => {
-  router.push({ name: 'AddEvent' });
+  router.push({ name: 'addeventform' }); 
 };
 </script>
 
