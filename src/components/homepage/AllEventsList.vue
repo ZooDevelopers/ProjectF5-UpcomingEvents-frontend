@@ -3,17 +3,26 @@ import { ref, onMounted, computed } from 'vue';
 import { useEventStore } from '@/stores/events';
 import EventCard from '@/components/events/EventCard.vue'; 
 import EventModal from '@/components/events/EventModal.vue'; 
+import PaginationBase from '../base/PaginationBase.vue';
 
 const showModal = ref(false);
 const currentEvent = ref(null);
 
 const eventStore = useEventStore();
+const currentPage = ref(0);
+const pageSize = ref(6);
 
 onMounted(async () => {
-  await eventStore.setEvents(); 
+  await eventStore.setEvents(currentPage.value, pageSize.value); 
 });
 
 const events = computed(() => eventStore.events);
+const totalPages = computed(() => eventStore.totalPages);
+
+const handlePageChanged = async (newPage) => {
+  currentPage.value = newPage;
+  await eventStore.setEvents(currentPage.value, pageSize.value);
+}
 
 const openModal = (event) => {
   currentEvent.value = event;
@@ -37,6 +46,12 @@ const closeModal = () => {
         @openModal="openModal" 
       />
     </div>
+
+    <PaginationBase
+      :current-page="currentPage"
+      :total-pages="totalPages"
+      @pageChanged="handlePageChanged"
+      />
 
     <EventModal v-if="showModal" :eventData="currentEvent" @close="closeModal" />
   </div>
