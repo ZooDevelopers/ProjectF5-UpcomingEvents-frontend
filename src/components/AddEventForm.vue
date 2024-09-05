@@ -23,87 +23,44 @@ const handleFileUpload = (event) => {
   form.value.image = file;
 };
 
-const uploadImage = async () => {
-  if (!form.value.image) {
-    alert("Por favor selecciona un archivo");
-    return null;
-  }
-
-  // Crear una referencia al archivo en Firebase Storage
-  const fileRef = storageRef(storage, `images/${form.value.image.name}`);
-  const uploadTask = uploadBytesResumable(fileRef, form.value.image);
-
-  // Seguimos el progreso de la subida y retornamos la URL una vez completado
-  return new Promise((resolve, reject) => {
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log(`Subida en progreso: ${progress}%`);
-      },
-      (error) => {
-        console.error("Error al subir la imagen:", error);
-        reject(error);
-      },
-      async () => {
-        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-        resolve(downloadURL);
-      }
-    );
-  });
-};
-
 const submitForm = async () => {
   try {
-    // Subimos la imagen y obtenemos la URL
+    // Subir la imagen y obtener la URL
     const imageUrl = await uploadImage();
     if (imageUrl) {
       form.value.imageUrl = imageUrl;
       console.log("Imagen subida correctamente. URL:", imageUrl);
     }
 
-    // Preparar el cuerpo de la solicitud para enviar al back-end
     const eventData = {
       title: form.value.title.trim(),
       date: form.value.date,
       time: form.value.time,
-      spots: form.value.spots,
+      spots: Number(form.value.spots),  // Asegurar que los spots sean numéricos
       location: form.value.location.trim(),
       imageUrl: form.value.imageUrl,
       description: form.value.description.trim(),
-      isFeatured: form.value.isFeatured,  // Booleano correcto
+      isFeatured: form.value.isFeatured,
     };
 
-    // Asegúrate de que no estás enviando un `id` manualmente
-    // Credenciales de autenticación básica
-    const username = 'admin';  // Cambia esto por el usuario correcto
-    const password = 'password';  // Cambia esto por la contraseña correcta
-    const credentials = btoa(`${username}:${password}`); // Codifica en base64
-
-    // Realizar la solicitud POST con Axios
+    // Realizar la solicitud POST para crear el evento
     const response = await axios.post(
-      'http://localhost:8080/api/v1/events',
-      eventData,
+      'http://localhost:8080/api/v1/events',  // Endpoint del servidor
+      eventData,  // Los datos del evento a enviar
       {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Basic ${credentials}` // Enviamos las credenciales codificadas en base64
-        }
+        withCredentials: true  // Esto asegura que la cookie de sesión se envíe automáticamente
       }
     );
 
-    // Si el servidor responde con éxito
     console.log('Evento guardado exitosamente:', response.data);
     alert('Evento creado exitosamente');
-
   } catch (error) {
-    // Manejo de errores
     if (error.response) {
-      // Errores en la respuesta del servidor
+      // Si hay algún error del servidor
       console.error("Error en el servidor:", error.response.data);
       alert("Error en el servidor: " + error.response.data.message);
     } else {
-      // Otros errores
+      // Si hay algún otro tipo de error
       console.error("Error al crear el evento:", error.message);
       alert("Error al crear el evento: " + error.message);
     }
