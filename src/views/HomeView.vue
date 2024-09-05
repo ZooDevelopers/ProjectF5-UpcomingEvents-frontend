@@ -1,9 +1,17 @@
 <script setup>
-import TheWelcome from '../components/TheWelcome.vue'
+
+import AllEventsList from '@/components/homepage/AllEventsList.vue';
+import HomeSlider from '@/components/homepage/HomeSlider.vue';
+
+
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <HomeSlider/>
+    <AllEventsList/>
+ 
   </main>
+
 </template>
+

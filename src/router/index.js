@@ -1,5 +1,11 @@
+
+import DeleteConfirmationForm from '@/components/DeleteConfirmationForm.vue'
+import EditEventForm from '@/components/EditEventForm.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import AddEventForm from '@/components/AddEventForm.vue'
+import ManageEventsView from '@/views/ManageEventsView.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,14 +15,30 @@ const router = createRouter({
       name: 'home',
       component: HomeView
     },
+
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    }
+      path: '/ManageEvents',
+      name: 'manageEvents',
+      component: ManageEventsView
+    },
+    
+    
+    {
+      path: '/addeventform',
+      name: 'addeventform',
+      component: AddEventForm
+    },
+    {
+      path: '/editeventform',
+      name: 'editeventform',
+      component: EditEventForm
+    },
+    {
+    path: '/deleteconfirmationform',
+    name: 'deleteconfirmationform',
+    component: DeleteConfirmationForm
+  },
+
   ]
 })
 
