@@ -2,65 +2,107 @@
 import Button from "@/components/base/Button.vue";
 import { ref } from "vue";
 import FormField from "./base/FormField.vue";
-import { storage } from "../firebase/firebase.js"; 
+import { storage } from "../firebase/firebase.js";
 import { ref as storageRef, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import axios from "axios"; // Importa Axios
+import axios from "axios";
+import { useRouter } from "vue-router"; 
+
 
 const form = ref({
   title: "",
   date: "",
   time: "",
-  spots: 0, // spots es numérico
+  maxparticipants: 0,  
   location: "",
   image: null,
   description: "",
   isFeatured: false,
-  imageUrl: "", // Guardamos la URL de la imagen subida
+  imageUrl: "", 
 });
+
+
+const router = useRouter();
+
 
 const handleFileUpload = (event) => {
   const file = event.target.files[0];
-  form.value.image = file;
+  form.value.image = file; 
 };
+
+
+const uploadImage = async () => {
+  if (!form.value.image) {
+    alert("Por favor selecciona un archivo");
+    return null;
+  }
+
+  const fileRef = storageRef(storage, `images/${form.value.image.name}`);
+  const uploadTask = uploadBytesResumable(fileRef, form.value.image);
+
+  return new Promise((resolve, reject) => {
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(`Subida en progreso: ${progress}%`);
+      },
+      (error) => {
+        console.error("Error al subir la imagen:", error);
+        reject(error);
+      },
+      async () => {
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+        resolve(downloadURL); 
+      }
+    );
+  });
+};
+
 
 const submitForm = async () => {
   try {
-    // Subir la imagen y obtener la URL
+    
     const imageUrl = await uploadImage();
     if (imageUrl) {
-      form.value.imageUrl = imageUrl;
+      form.value.imageUrl = imageUrl; 
       console.log("Imagen subida correctamente. URL:", imageUrl);
     }
 
+    
     const eventData = {
       title: form.value.title.trim(),
       date: form.value.date,
       time: form.value.time,
-      spots: Number(form.value.spots),  // Asegurar que los spots sean numéricos
+      maxparticipants: Number(form.value.maxparticipants),
       location: form.value.location.trim(),
       imageUrl: form.value.imageUrl,
       description: form.value.description.trim(),
       isFeatured: form.value.isFeatured,
     };
 
-    // Realizar la solicitud POST para crear el evento
+    
     const response = await axios.post(
-      'http://localhost:8080/api/v1/events',  // Endpoint del servidor
-      eventData,  // Los datos del evento a enviar
+      'http://localhost:8080/api/v1/events',  
+      eventData,  
       {
-        withCredentials: true  // Esto asegura que la cookie de sesión se envíe automáticamente
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true  
       }
     );
 
     console.log('Evento guardado exitosamente:', response.data);
     alert('Evento creado exitosamente');
+
+    
+    router.push('/manageEvents');
   } catch (error) {
+    
     if (error.response) {
-      // Si hay algún error del servidor
       console.error("Error en el servidor:", error.response.data);
       alert("Error en el servidor: " + error.response.data.message);
     } else {
-      // Si hay algún otro tipo de error
       console.error("Error al crear el evento:", error.message);
       alert("Error al crear el evento: " + error.message);
     }
@@ -102,14 +144,13 @@ const submitForm = async () => {
         />
         
         <FormField
-  id="spots"
-  label="Spots"
-  type="number"
-  v-model:number="form.spots"  
-  required
-  class="w-full"
-/>
-
+          id="maxparticipants"
+          label="Max Participants"
+          type="number"
+          v-model:number="form.maxparticipants"
+          required
+          class="w-full"
+        />
       </div>
       <FormField
         id="location"
@@ -137,7 +178,7 @@ const submitForm = async () => {
         label="Description"
         type="textarea"
         placeholder="Type here"
-        v-model:modelValue="form.spots"
+        v-model:modelValue="form.description"
         required
         class="w-full"
       />
@@ -168,4 +209,4 @@ const submitForm = async () => {
   </div>
 </template>
 
-<style scoped></style>
+
