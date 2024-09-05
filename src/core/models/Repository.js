@@ -9,7 +9,9 @@ export default class Repository {
 
     async get() {
         try {
-            const response = await fetch(this.uri);
+            const response = await fetch(this.uri, {
+                credentials: 'include'  // Incluye las cookies
+            });
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }

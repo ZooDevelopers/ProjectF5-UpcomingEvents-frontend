@@ -7,13 +7,14 @@ import EventModel from '@/components/EventModel.vue'; // Importar el nuevo compo
 const showModal = ref(false);
 const currentEvent = ref(null);
 
-
 const eventStore = useEventStore();
 
+// Obtener los eventos cuando el componente se monte
 onMounted(async () => {
-  await eventStore.setEvents();
+  await eventStore.fetchEvents(); // Cambia setEvents a fetchEvents
 });
 
+// Computed para obtener los eventos del store
 const events = computed(() => eventStore.events);
 
 const truncateText = (text, wordLimit) => {
@@ -38,33 +39,32 @@ const closeModal = () => {
     <div v-if="events.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <div
         v-for="event in events"
-        :key="event.getTitle()"
+        :key="event.id" 
         class="flex flex-col w-full max-w-sm mx-auto bg-purple-800 text-white shadow-lg rounded-lg overflow-hidden"
       >
         <!-- Imagen del evento con click handler para mostrar el modal -->
         <div class="cursor-pointer" @click="openModal(event)">
-          <img :src="event.getImgUrl()" alt="Event Image" class="w-full h-48 object-cover" />
+          <img :src="event.imageUrl" alt="Event Image" class="w-full h-48 object-cover" /> <!-- Asegúrate de que `imageUrl` sea el nombre correcto -->
         </div>
         <div class="p-4">
           <div class="flex justify-between items-center text-sm text-grey-300 mb-2">
-            <span><i class="far fa-calendar-alt"></i> {{ event.getDate() }}</span>
-            <span><i class="far fa-clock"></i> {{ event.getTime() }}</span>
+            <span><i class="far fa-calendar-alt"></i> {{ event.date }}</span> <!-- Asegúrate de que `date` sea el nombre correcto -->
+            <span><i class="far fa-clock"></i> {{ event.time }}</span> <!-- Asegúrate de que `time` sea el nombre correcto -->
           </div>
-          <h3 class="text-lg text-peach-500 mx-0 my-2">{{ event.getTitle() }}</h3>
-          <p class="text-base text-grey-300 mb-4">{{ truncateText(event.getDescription(), 10) }}</p>
+          <h3 class="text-lg text-peach-500 mx-0 my-2">{{ event.title }}</h3> <!-- Asegúrate de que `title` sea el nombre correcto -->
+          <p class="text-base text-grey-300 mb-4">{{ truncateText(event.description, 10) }}</p> <!-- Asegúrate de que `description` sea el nombre correcto -->
           <div class="text-base text-grey-300 mb-2">
-            <span><i class="fas fa-map-marker-alt"></i> {{ event.getLocation() }}</span>
+            <span><i class="fas fa-map-marker-alt"></i> {{ event.location }}</span> <!-- Asegúrate de que `location` sea el nombre correcto -->
           </div>
           <div class="flex justify-between items-center">
-            <span class="text-base text-grey-300"><i class="fas fa-user"></i> Spots Left: {{ event.getMaxparticipants() }}</span>
+            <span class="text-base text-grey-300"><i class="fas fa-user"></i> Spots Left: {{ event.maxParticipants }}</span> <!-- Asegúrate de que `maxParticipants` sea el nombre correcto -->
             <Button label="Join Event" />
           </div>
         </div>
       </div>
     </div>
 
-     <EventModel :showModal="showModal" :event="currentEvent" @close="closeModal" />
-   
+    <EventModel :showModal="showModal" :event="currentEvent" @close="closeModal" />
   </div>
 </template>
 

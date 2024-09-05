@@ -15,23 +15,31 @@ export default class EventsService {
                 throw new Error('La respuesta de la API no es un array de eventos válido.');
             }
 
-            const events = data.map(event => {
-                return new Events(
-                    event.title,
-                    event.date,
-                    event.maxparticipants,
-                    event.description,
-                    event.imageUrl,
-                    event.is_featured,
-                    event.location,
-                    event.time
-                );
-            });
+            const events = data.map(event => new Events(
+                event.title,
+                event.date,
+                event.maxparticipants,
+                event.description,
+                event.imageUrl,
+                event.is_featured,
+                event.location,
+                event.time
+            ));
 
             return events;
         } catch (error) {
             console.error('Error al obtener eventos:', error.message);
             throw new Error('Error loading Events API');
+        }
+    }
+
+    async deleteEvent(eventId) {
+        try {
+            const result = await this.#repo.deleteEvent(eventId);
+            return result;
+        } catch (error) {
+            console.error('Error al eliminar evento:', error.message);
+            throw new Error('Error deleting Event');
         }
     }
 }
