@@ -2,25 +2,33 @@
 import Button from "@/components/base/Button.vue";
 import { ref } from "vue";
 import FormField from "./base/FormField.vue";
-import { storage } from "../firebase/firebase.js"; // Importamos la configuración de Firebase
+import { storage } from "../firebase/firebase.js";
 import { ref as storageRef, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import axios from "axios";
+import { useRouter } from "vue-router"; 
+
 
 const form = ref({
   title: "",
   date: "",
   time: "",
-  spots: 0,
+  maxparticipants: 0,  
   location: "",
   image: null,
   description: "",
   isFeatured: false,
-  imageUrl: "", // Agregamos para almacenar la URL de la imagen subida
+  imageUrl: "", 
 });
+
+
+const router = useRouter();
+
 
 const handleFileUpload = (event) => {
   const file = event.target.files[0];
-  form.value.image = file;
+  form.value.image = file; 
 };
+
 
 const uploadImage = async () => {
   if (!form.value.image) {
@@ -28,11 +36,9 @@ const uploadImage = async () => {
     return null;
   }
 
-  // Crear una referencia al archivo en Firebase Storage
   const fileRef = storageRef(storage, `images/${form.value.image.name}`);
   const uploadTask = uploadBytesResumable(fileRef, form.value.image);
 
-  // Seguimos el progreso de la subida y retornamos la URL una vez completado
   return new Promise((resolve, reject) => {
     uploadTask.on(
       "state_changed",
@@ -46,55 +52,61 @@ const uploadImage = async () => {
       },
       async () => {
         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-        resolve(downloadURL);
+        resolve(downloadURL); 
       }
     );
   });
 };
 
+
 const submitForm = async () => {
   try {
-    const imageUrl = await uploadImage(); // Subimos la imagen y obtenemos la URL
+    
+    const imageUrl = await uploadImage();
     if (imageUrl) {
-      form.value.imageUrl = imageUrl; // Guardamos la URL de la imagen en el formulario
+      form.value.imageUrl = imageUrl; 
       console.log("Imagen subida correctamente. URL:", imageUrl);
     }
 
-    // Aquí puedes enviar el formulario completo al servidor o hacer lo que necesites
-    console.log("Form data:", form.value);
-    alert("Evento creado exitosamente");
-
-    // Limpiar formulario
-    form.value = {
-      title: "",
-      date: "",
-      time: "",
-      spots: 0,
-      location: "",
-      image: null,
-      description: "",
-      isFeatured: false,
-      imageUrl: "",
+    
+    const eventData = {
+      title: form.value.title.trim(),
+      date: form.value.date,
+      time: form.value.time,
+      maxparticipants: Number(form.value.maxparticipants),
+      location: form.value.location.trim(),
+      imageUrl: form.value.imageUrl,
+      description: form.value.description.trim(),
+      isFeatured: form.value.isFeatured,
     };
-  } catch (error) {
-    alert("Error al subir la imagen: " + error.message);
-  }
-};
 
-const cancel = () => {
-  console.log("Cancel");
-  // Resetea el formulario
-  form.value = {
-    title: "",
-    date: "",
-    time: "",
-    spots: 0,
-    location: "",
-    image: null,
-    description: "",
-    isFeatured: false,
-    imageUrl: "",
-  };
+    
+    const response = await axios.post(
+      'http://localhost:8080/api/v1/events',  
+      eventData,  
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true  
+      }
+    );
+
+    console.log('Evento guardado exitosamente:', response.data);
+    alert('Evento creado exitosamente');
+
+    
+    router.push('/manageEvents');
+  } catch (error) {
+    
+    if (error.response) {
+      console.error("Error en el servidor:", error.response.data);
+      alert("Error en el servidor: " + error.response.data.message);
+    } else {
+      console.error("Error al crear el evento:", error.message);
+      alert("Error al crear el evento: " + error.message);
+    }
+  }
 };
 </script>
 
@@ -130,11 +142,12 @@ const cancel = () => {
           required
           class="w-full"
         />
+        
         <FormField
-          id="spots"
-          label="Spots"
-          type="text"
-          v-model:modelValue="form.spots"
+          id="maxparticipants"
+          label="Max Participants"
+          type="number"
+          v-model:number="form.maxparticipants"
           required
           class="w-full"
         />
@@ -196,4 +209,4 @@ const cancel = () => {
   </div>
 </template>
 
-<style scoped></style>
+
