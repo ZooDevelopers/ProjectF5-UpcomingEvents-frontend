@@ -1,11 +1,17 @@
 <script setup>
-import Card from '@/components/Card.vue';
+
+import AllEventsList from '@/components/homepage/AllEventsList.vue';
+import HomeSlider from '@/components/homepage/HomeSlider.vue';
 
 
 </script>
 
 <template>
   <main>
-    <Card />
+    <HomeSlider/>
+    <AllEventsList/>
+ 
   </main>
+
 </template>
+

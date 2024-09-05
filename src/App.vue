@@ -1,6 +1,6 @@
 <script setup>
-import Header from './components/Header.vue'
-import Footer from './components/Footer.vue';
+import Header from './components/global/Header.vue'
+import Footer from './components/global/Footer.vue';
 </script>
 
 <template>
@@ -23,7 +23,7 @@ import Footer from './components/Footer.vue';
   display: flex;
   flex-direction: column;
   min-height: 100vh; 
-  background-color: #574973;
+  background-color: #30283F;
 }
 
 .content {

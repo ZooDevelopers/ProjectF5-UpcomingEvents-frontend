@@ -1,30 +1,30 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 import Button from './base/Button.vue'; 
+import { useEventStore } from '@/stores/events';
 import { useRouter } from 'vue-router';
 import EditEventForm from './EditEventForm.vue';
 import DeleteConfirmationForm from './DeleteConfirmationForm.vue';
+import PaginationBase from '@/components/base/PaginationBase.vue';
 
 const router = useRouter();
-const events = ref([]); 
+// const events = ref([]); 
 
-//  eventos desde el backend
-const fetchEvents = async () => {
-  try {
-    const response = await axios.get('http://localhost:8080/api/v1/events');
-    if (response.data && Array.isArray(response.data)) {
-      events.value = response.data;
-    } else {
-      console.error('The response from the backend does not have the expected structure.');
-    }
-  } catch (error) {
-    console.error('Error retrieving the list of events:', error);
-  }
-};
+const eventStore = useEventStore();
+const currentPage = ref(0);
+const pageSize = ref(10);
+const events = computed(() => eventStore.events);
+const totalPages = computed(() => eventStore.totalPages);
 
-onMounted(fetchEvents);
+onMounted(async () => {
+  await eventStore.setEvents(currentPage.value, pageSize.value); 
+});
 
+const handlePageChanged = async (newPage) => {
+  currentPage.value = newPage;
+  await eventStore.setEvents(currentPage.value, pageSize.value);
+}
 
 const deleteEvent = (id) => {
   router.push({ name: 'deleteconfirmationform', params: { id } });
@@ -42,12 +42,12 @@ const addNewEvent = () => {
 </script>
 
 <template>
-  <div class="p-8 bg-purple-800 text-purple-50 rounded-lg">
+  <div class="bg-purple-800 text-purple-50 rounded-lg max-w-[1290px] mx-auto my-12 xl:my-32 xl:px-0 px-6">
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-4xl font-rubik text-pink">MANAGE EVENTS</h1>
       <Button label="Add New Event" @click="addNewEvent" /> 
     </div>
-    <div class="overflow-x-auto bg-purple-600 rounded-lg border border-purple-800">
+    <div class="overflow-x-auto bg-purple-600 rounded-lg border border-purple-800 ">
       <table class="min-w-full text-left border-collapse">
         <thead class="bg-purple-400">
           <tr>
@@ -65,7 +65,7 @@ const addNewEvent = () => {
             <td class="px-6 py-4 border-b border-purple-700">{{ event.date }}</td>
             <td class="px-6 py-4 border-b border-purple-700">{{ event.time }}</td>
             <td class="px-6 py-4 border-b border-purple-700">{{ event.maxparticipants }}</td>
-            <td class="px-6 py-4 border-b border-purple-700">{{ event.is_featured ? 'Yes' : 'No' }}</td>
+            <td class="px-6 py-4 border-b border-purple-700">{{ event.isFeatured ? 'Yes' : 'No' }}</td>
             <td class="px-6 py-4 flex space-x-2 border-b border-purple-700">
               <button @click="editEvent(event.id)" class="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded">
                 ✏️
@@ -78,5 +78,10 @@ const addNewEvent = () => {
         </tbody>
       </table>
     </div>
+    <PaginationBase class="mt-10"
+      :current-page="currentPage"
+      :total-pages="totalPages"
+      @pageChanged="handlePageChanged"
+      />
   </div>
 </template>
