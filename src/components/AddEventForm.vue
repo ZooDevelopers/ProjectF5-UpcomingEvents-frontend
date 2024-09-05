@@ -82,7 +82,7 @@ const submitForm = async () => {
 
     
     const response = await axios.post(
-      'http://localhost:8080/api/v1/events',  
+      'http://localhost:8080/api/v1/events/add',  
       eventData,  
       {
         headers: {
