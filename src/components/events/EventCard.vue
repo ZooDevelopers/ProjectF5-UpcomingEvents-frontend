@@ -22,21 +22,21 @@ const truncateText = (text, wordLimit) => {
 <template>
   <div class="demo flex flex-col w-full mx-auto bg-purple-600 text-white shadow-lg rounded-[20px] overflow-hidden">
     <div class="cursor-pointer" @click="handleOpenModal">
-      <!-- <img :src="eventData?.getImgUrl()" alt="Event Image" class="w-full h-48 object-cover" /> -->
+      <!-- <img :src="eventData.imageUrl" alt="Event Image" class="w-full h-48 object-cover" /> -->
       <img :src="'https://acciosocial.org/wp-content/uploads/2023/05/web_factoria-f5.png'" alt="Event Image" class="w-full h-48 object-cover" />
     </div>
     <div class="p-4">
       <div class="flex justify-between items-center text-sm text-grey-300 mb-2">
-        <span><i class="far fa-calendar-alt"></i> {{ eventData?.getDate() }}</span>
-        <span><i class="far fa-clock"></i> {{ eventData?.getTime() }}</span>
+        <span><i class="far fa-calendar-alt"></i> {{ eventData.date }}</span>
+        <span><i class="far fa-clock"></i> {{ eventData.time }}</span>
       </div>
-      <h3 class="text-lg text-peach-500 mx-0 my-2">{{ eventData?.getTitle() }}</h3>
-      <p class="text-base text-grey-300 mb-4">{{ truncateText(eventData?.getDescription(), 10) }}</p>
+      <h3 class="text-lg text-peach-500 mx-0 my-2">{{ eventData.title }}</h3>
+      <p class="text-base text-grey-300 mb-4">{{ truncateText(eventData.description, 30) }}</p>
       <div class="text-base text-grey-300 mb-2">
-        <span><i class="fas fa-map-marker-alt"></i> {{ eventData?.getLocation() }}</span>
+        <span><i class="fas fa-map-marker-alt"></i> {{ eventData.location }}</span>
       </div>
       <div class="flex justify-between items-center">
-        <span class="text-base text-grey-300"><i class="fas fa-user"></i> Spots Left: {{ eventData?.getMaxparticipants() }}</span>
+        <span class="text-base text-grey-300"><i class="fas fa-user"></i> Spots Left: {{ eventData.maxparticipants }}</span>
         <Button label="Join Event" />
       </div>
     </div>
