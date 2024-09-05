@@ -15,18 +15,16 @@ export default class EventsService {
                 throw new Error('La respuesta de la API no es un array de eventos válido.');
             }
 
-            const events = data.content.map(event => {
-                return new Events(
-                    event.title,
-                    event.date,
-                    event.maxparticipants,
-                    event.description,
-                    event.imageUrl,
-                    event.isFeatured,
-                    event.location,
-                    event.time
-                );
-            });
+            const events = data.map(event => new Events(
+                event.title,
+                event.date,
+                event.maxparticipants,
+                event.description,
+                event.imageUrl,
+                event.is_featured,
+                event.location,
+                event.time
+            ));
 
             return { events, totalPages: data.totalPages }; 
         } catch (error) {
@@ -35,29 +33,13 @@ export default class EventsService {
         }
     }
 
-    async getFeaturedEvents() {
+    async deleteEvent(eventId) {
         try {
-            const data = await this.#repo.getFeaturedEvents();
-    
-            if (!data || !Array.isArray(data)) {
-                throw new Error('The API response is not a valid array of events.');
-            }
-    
-            const events = data.map(event => new Events(
-                event.title,
-                event.date,
-                event.maxparticipants,
-                event.description,
-                event.imageUrl,
-                event.isFeatured,
-                event.location,
-                event.time
-            ));
-    
-            return events;
+            const result = await this.#repo.deleteEvent(eventId);
+            return result;
         } catch (error) {
-            console.error('Error fetching featured events:', error.message);
-            throw new Error('Error loading featured events API');
+            console.error('Error al eliminar evento:', error.message);
+            throw new Error('Error deleting Event');
         }
     }
 }
