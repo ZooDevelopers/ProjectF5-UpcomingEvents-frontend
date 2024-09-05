@@ -1,6 +1,6 @@
-import { ref } from 'vue';
-import { defineStore } from 'pinia';
 import axios from 'axios';
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
 export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = ref(false);
@@ -37,14 +37,18 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function register(user, pass, email) {
     try {
-      const response = await axios.post(registerEndpoint, { username: user, password: pass, email });
-
+      const response = await axios.post(registerEndpoint, null, {
+        headers: {
+          'username': user,
+          'password': pass,
+          'email': email
+        }
+      });
       token.value = response.data.token || '';
       username.value = response.data.Username;
       userRole.value = response.data.role;
       isAuthenticated.value = true;
       errorMessage.value = '';
-
       localStorage.setItem('authToken', token.value);
     } catch (error) {
       isAuthenticated.value = false;
@@ -52,6 +56,7 @@ export const useAuthStore = defineStore('auth', () => {
       console.error('Registration error:', error);
     }
   }
+
 
   function logout() {
     isAuthenticated.value = false;
