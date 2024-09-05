@@ -1,23 +1,21 @@
-// Importa las funciones necesarias de Firebase Modular SDK
+
 import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
 
-// Configuración de Firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyD0VWB9HboEQzNYXDJSAMH_WLaYaGZ4fHw",
-    authDomain: "events-concert.firebaseapp.com",
-    projectId: "events-concert",
-    storageBucket: "events-concert.appspot.com",
-    messagingSenderId: "135306419699",
-    appId: "1:135306419699:web:093ec20945439462100686",
-    measurementId: "G-Z9VXBZH13F"
-};
+    apiKey: "AIzaSyDTSNAx-4Xu4nAp_5LHdNo9bb93WtTLSYk",
+    authDomain: "events-d140d.firebaseapp.com",
+    projectId: "events-d140d",
+    storageBucket: "events-d140d.appspot.com",
+    messagingSenderId: "166274429591",
+    appId: "1:166274429591:web:62d91e5ddea6d65ed1efd2"
+  };
 
-// Inicializa Firebase
+
+
 const app = initializeApp(firebaseConfig);
 
-// Inicializa Firebase Storage
 const storage = getStorage(app);
 
-// Exporta el servicio de almacenamiento para usarlo en otros componentes
+
 export { storage };
