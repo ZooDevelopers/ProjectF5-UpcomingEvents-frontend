@@ -15,7 +15,6 @@ const isBeginning = ref(true);
 const isEnd = ref(false);
 
 const eventStore = useEventStore();
-const events = ref([]);
 
 const updateButtonState = () => {
   if (!swiperInstance.value) return;
@@ -26,8 +25,7 @@ const updateButtonState = () => {
 
 onMounted(async () => {
   try {
-    await eventStore.setEvents();
-    events.value = eventStore.events.filter((event) => event.getIs_Featured());
+    await eventStore.fetchFeaturedEvents();
 
     await nextTick();
 
@@ -59,18 +57,18 @@ const openModal = (event) => {
     <div class="swiper mySwiper">
       <div class="swiper-wrapper">
         <swiper-slide
-          v-for="event in events"
-          :key="event.title"
+          v-for="event in eventStore.featuredEvents"
+          :key="event.id"
           class="swiper-slide slide-temporary cursor-pointer"
           @click="openModal(event)"
         >
           <div class="slide-content flex flex-col max-w-[1290px] mx-auto py-16">
             <div class="p-5 bg-purple-600 max-w-[600px] rounded-[20px] flex flex-col gap-5">
               <span class="flex gap-8 text-grey font-rubik">
-                <p><FontAwesomeIcon :icon="faCalendar" class="text-xl text-pink mr-1" /> {{ event.getDate() }}</p>
-                <p><FontAwesomeIcon :icon="faLocationDot" class="text-xl text-pink mr-1" /> {{ event.getLocation() }}</p>
+                <p><FontAwesomeIcon :icon="faCalendar" class="text-xl text-pink mr-1" /> {{ event.date }}</p>
+                <p><FontAwesomeIcon :icon="faLocationDot" class="text-xl text-pink mr-1" /> {{ event.location }}</p>
               </span>
-              <h3 class="text-peach-500 text-3xl font-rubik font-semibold uppercase">{{ event.getTitle() }}</h3>
+              <h3 class="text-peach-500 text-3xl font-rubik font-semibold uppercase">{{ event.title }}</h3>
             </div>
           </div>
         </swiper-slide>

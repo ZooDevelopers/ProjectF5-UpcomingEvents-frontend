@@ -1,6 +1,7 @@
 <script setup>
-import Card from '@/components/Card.vue';
-import HomeSlider from '@/components/slider/HomeSlider.vue';
+
+import AllEventsList from '@/components/homepage/AllEventsList.vue';
+import HomeSlider from '@/components/homepage/HomeSlider.vue';
 
 
 </script>
@@ -8,7 +9,7 @@ import HomeSlider from '@/components/slider/HomeSlider.vue';
 <template>
   <main>
     <HomeSlider/>
-    <Card />
+    <AllEventsList/>
  
   </main>
 
