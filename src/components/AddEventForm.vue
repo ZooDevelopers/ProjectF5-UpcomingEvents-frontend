@@ -147,7 +147,7 @@ const submitForm = async () => {
           id="maxparticipants"
           label="Max Participants"
           type="number"
-          v-model:number="form.maxparticipants"
+          v-model:modelValue="form.maxparticipants"
           required
           class="w-full"
         />
