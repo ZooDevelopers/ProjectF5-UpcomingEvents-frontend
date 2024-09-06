@@ -35,7 +35,7 @@ const closeModal = () => {
 </script>
 
 <template>
-  <div class="max-w-[1290px] mx-auto xl:px-0 px-6">
+  <div class="max-w-[1290px] mx-auto xl:px-0 px-6 py-14">
     <h2 class="text-pink text-5xl font-bold font-rubik uppercase leading-tight mb-10">All Events</h2>
     
     <div v-if="events.length" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">

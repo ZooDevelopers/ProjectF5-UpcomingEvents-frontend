@@ -22,8 +22,7 @@ const truncateText = (text, wordLimit) => {
 <template>
   <div class="demo flex flex-col w-full mx-auto bg-purple-600 text-white shadow-lg rounded-[20px] overflow-hidden">
     <div class="cursor-pointer" @click="handleOpenModal">
-      <!-- <img :src="eventData.imageUrl" alt="Event Image" class="w-full h-48 object-cover" /> -->
-      <img :src="'https://acciosocial.org/wp-content/uploads/2023/05/web_factoria-f5.png'" alt="Event Image" class="w-full h-48 object-cover" />
+      <img :src="eventData.imgUrl" alt="Event Image" class="w-full h-48 object-cover" />
     </div>
     <div class="p-4">
       <div class="flex justify-between items-center text-sm text-grey-300 mb-2">

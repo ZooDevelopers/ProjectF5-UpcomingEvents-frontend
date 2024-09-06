@@ -82,7 +82,7 @@ const submitForm = async () => {
 
     
     const response = await axios.post(
-      'http://localhost:8080/api/v1/events',  
+      'http://localhost:8080/api/v1/events/add',  
       eventData,  
       {
         headers: {
@@ -147,7 +147,7 @@ const submitForm = async () => {
           id="maxparticipants"
           label="Max Participants"
           type="number"
-          v-model:number="form.maxparticipants"
+          v-model:modelValue="form.maxparticipants"
           required
           class="w-full"
         />

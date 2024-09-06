@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, nextTick } from "vue";
+import { ref, onMounted, nextTick, computed } from "vue";
 import { Swiper } from "swiper";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
@@ -47,6 +47,10 @@ onMounted(async () => {
   }
 });
 
+const backgroundStyle = (event) => ({
+  backgroundImage: `url(${event.imgUrl})`,
+})
+
 const openModal = (event) => {
   console.log(event); // TODO: modal opening logic here
 };
@@ -59,10 +63,10 @@ const openModal = (event) => {
         <swiper-slide
           v-for="event in eventStore.featuredEvents"
           :key="event.id"
-          class="swiper-slide slide-temporary cursor-pointer"
-          @click="openModal(event)"
+          class="swiper-slide slide-temporary cursor-pointer bg-cover bg-center bg-no-repeat"
+          @click="openModal(event)" :style="backgroundStyle(event)"
         >
-          <div class="slide-content flex flex-col max-w-[1290px] mx-auto py-16">
+          <div class="slide-content h-full flex flex-col max-w-[1290px] mx-auto py-16 justify-end">
             <div class="p-5 bg-purple-600 max-w-[600px] rounded-[20px] flex flex-col gap-5">
               <span class="flex gap-8 text-grey font-rubik">
                 <p><FontAwesomeIcon :icon="faCalendar" class="text-xl text-pink mr-1" /> {{ event.date }}</p>
