@@ -1,6 +1,6 @@
-# ProjectF5-UpcomingEvents-frontend
+# ProjectF5 Upcoming Events (frontend)
 
-This template should help get you started developing with Vue 3 in Vite.
+A software development collective wants to create a web application to manage its online events such as workshops, masterclasses or webinars. Users will be able to see the description of an event, sign up and unsubscribe. They will also be able to see the list of events they have signed up for. The administrator must have the tools for managing (CRUD) the events.
 
 ## Recommended IDE Setup
 
@@ -33,3 +33,22 @@ npm run build
 ```sh
 npm run test:unit
 ```
+
+## Tools
+
+- Vue 3 with the Composition API
+- Pinia
+- Router
+- Axios
+- JavaScript
+- Tailwind CSS
+
+## Figma link 
+
+https://www.figma.com/design/pVL4FZE6kdcwspqbnsyy9i/UpcomingEvents?node-id=0-1&t=pocyx0GV7rE5QKc3-1 
+
+### Prewiew:
+
+[![upcoming-events-preview.png](https://i.postimg.cc/fRDznFzX/upcoming-events-preview.png)](https://postimg.cc/qzDV21CM)
+
+[![upcoming-events-preview2.png](https://i.postimg.cc/Yqf7336S/upcoming-events-preview2.png)](https://postimg.cc/SJsHQct0)
